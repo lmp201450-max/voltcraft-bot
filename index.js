@@ -35,3 +35,6 @@ bot.on('end', () => {
   console.log('انقطع الاتصال، يتم إعادة المحاولة...');
   setTimeout(() => process.exit(1), 5000);
 });
+bot.on('death', () => {
+  bot.emit('respawn');
+});
