@@ -13,7 +13,7 @@ server.listen(PORT, () => {
 const bot = mineflayer.createBot({
   host: 'radicalcraft.progamer.me',
   port: 43702,
-  username: 'Bot_AFK',
+  username: 'RadicalGuard6464,
   offline: true
 });
 
