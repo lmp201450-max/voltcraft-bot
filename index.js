@@ -19,6 +19,12 @@ const bot = mineflayer.createBot({
 
 bot.on('spawn', () => {
   console.log('تم دخول البوت بنجاح داخل سيرفر راديكال كرافت!');
+  
+  // حركة خفيفة كل دقيقة عشان الخمول
+  setInterval(() => {
+    bot.setControlState('jump', true);
+    setTimeout(() => bot.setControlState('jump', false), 500);
+  }, 60000);
 });
 
 bot.on('error', (err) => {
