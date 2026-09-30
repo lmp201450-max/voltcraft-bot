@@ -13,14 +13,13 @@ server.listen(PORT, () => {
 const bot = mineflayer.createBot({
   host: 'radicalcraft.progamer.me',
   port: 43702,
-  username: 'Mik850018@gmail.com',
-  auth: 'microsoft'
+  username: 'Bot_AFK',
+  offline: true
 });
 
 bot.on('spawn', () => {
   console.log('تم دخول البوت بنجاح داخل سيرفر راديكال كرافت!');
   
-  // حركة خفيفة كل دقيقة عشان الخمول
   setInterval(() => {
     bot.setControlState('jump', true);
     setTimeout(() => bot.setControlState('jump', false), 500);
@@ -29,4 +28,8 @@ bot.on('spawn', () => {
 
 bot.on('error', (err) => {
   console.log('خطأ:', err);
+});
+
+bot.on('end', (reason) => {
+  console.log('انقطع اتصال البوت بسبب:', reason);
 });
