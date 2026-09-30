@@ -21,16 +21,19 @@ const bot = mineflayer.createBot({
 bot.on('spawn', () => {
   console.log('تم دخول البوت بنجاح داخل سيرفر راديكال كرافت');
   
-  // حركة خفيفة ومتباعدة لمنع الخمول بدون إزعاج الحماية
+  // حركة خفيفة لمنع الخمول + كتابة ذكر في الشات كل دقيقة ونصف
   setInterval(() => {
-    // تبديل حركة المشي الأمامي والخلفي بخفة
+    // حركة بسيطة للأمام والخلف بخفة
     bot.setControlState('forward', true);
     setTimeout(() => {
       bot.setControlState('forward', false);
       bot.setControlState('back', true);
       setTimeout(() => bot.setControlState('back', false), 400);
     }, 400);
-  }, 45000); // كل 45 ثانية عشان ميعملش سبام
+
+    // كتابة الصلاة على النبي في الشات
+    bot.chat('صلى على سيدنا محمد ﷺ');
+  }, 90000); // كل 90 ثانية عشان ميعملش سبام في الشات
 });
 
 bot.on('death', () => {
