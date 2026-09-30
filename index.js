@@ -21,10 +21,21 @@ const bot = mineflayer.createBot({
 bot.on('spawn', () => {
   console.log('تم دخول البوت بنجاح داخل سيرفر راديكال كرافت');
   
+  // حركة خفيفة ومتباعدة لمنع الخمول بدون إزعاج الحماية
   setInterval(() => {
-    bot.setControlState('jump', true);
-    setTimeout(() => bot.setControlState('jump', false), 500);
-  }, 60000);
+    // تبديل حركة المشي الأمامي والخلفي بخفة
+    bot.setControlState('forward', true);
+    setTimeout(() => {
+      bot.setControlState('forward', false);
+      bot.setControlState('back', true);
+      setTimeout(() => bot.setControlState('back', false), 400);
+    }, 400);
+  }, 45000); // كل 45 ثانية عشان ميعملش سبام
+});
+
+bot.on('death', () => {
+  console.log('البوت مات، جاري إعادة الريسبن...');
+  bot.respawn();
 });
 
 bot.on('error', (err) => {
@@ -34,7 +45,4 @@ bot.on('error', (err) => {
 bot.on('end', () => {
   console.log('انقطع الاتصال، يتم إعادة المحاولة...');
   setTimeout(() => process.exit(1), 5000);
-});
-bot.on('death', () => {
-  bot.emit('respawn');
 });
