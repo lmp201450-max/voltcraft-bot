@@ -1,7 +1,7 @@
 const mineflayer = require('mineflayer');
 const { Telegraf } = require('telegraf');
 
-const tgBot = new Telegraf('8656237005:AAH4xQdxdsnln1t0LXgAz4DyUbEwn7fA87w');
+const tgBot = new Telegraf('8656237005:AAHReANQpXDoblhC1olX0gA2aYdLuqVEaoA');
 
 tgBot.start((ctx) => {
     ctx.reply('تم التشغيل');
@@ -12,7 +12,7 @@ console.log('تم تشغيل بوت التليجرام بنجاح!');
 
 function createMinecraftBot() {
     const bot = mineflayer.createBot({
-        host: 'radicalcraft.progamer.mw',
+        host: 'radicalcraft.progamer.me',
         port: 43702,
         username: 'VoltCraftBot',
         version: false
