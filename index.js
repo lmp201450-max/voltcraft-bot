@@ -1,14 +1,15 @@
 const mineflayer = require('mineflayer');
 const { Telegraf } = require('telegraf');
 
-const tgBot = new Telegraf('8656237005:AAHReANQpxDobIhC1oIX0gA2aYdLuqVEaoA');
+// استخدم التوكن مباشرة أو من متغيرات البيئة
+const tgBot = new Telegraf('8656237005:AA...التوكن_بتاعك');
 
 tgBot.start((ctx) => {
-    ctx.reply('تم فتح البوت');
+    ctx.reply('أهلاً بيك يا صقر، بوت VoltCraft شغال ومتصل معاك تمام!');
 });
 
 tgBot.launch();
-console.log('تم تشغيل بوت تليجرام بنجاح!');
+console.log('تم تشغيل بوت التليجرام بنجاح!');
 
 function createMinecraftBot() {
     const bot = mineflayer.createBot({
@@ -19,7 +20,7 @@ function createMinecraftBot() {
     });
 
     bot.on('spawn', () => {
-        console.log('تم دخول البوت وثباته في مكانه بنجاح');
+        console.log('تم دخول البوت وبناء في مكانه بنجاح.');
     });
 
     bot.on('error', (err) => {
