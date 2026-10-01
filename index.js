@@ -2,7 +2,6 @@ const mineflayer = require('mineflayer');
 const { Telegraf } = require('telegraf');
 const http = require('http');
 
-// سيرفر ويب بسيط عشان Render يفضل مثبت البوت وما يقفلوش
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Bot is running!');
@@ -15,11 +14,11 @@ server.listen(PORT, () => {
 const tgBot = new Telegraf('8656237005:AAHReANQpXDoblhC1olX0gA2aYdLuqVEaoA');
 
 tgBot.start((ctx) => {
-    ctx.reply('تم التشغيل');
+    ctx.reply('Bot is running');
 });
 
 tgBot.launch();
-console.log('تم تشغيل بوت التليجرام بنجاح!');
+console.log('Telegram bot started successfully!');
 
 function createMinecraftBot() {
     const bot = mineflayer.createBot({
@@ -29,15 +28,15 @@ function createMinecraftBot() {
     });
 
     bot.on('spawn', () => {
-        console.log('تم دخول البوت وبناء في مكانه بنجاح.');
+        console.log('Bot spawned successfully.');
     });
 
     bot.on('error', (err) => {
-        console.log('حدث خطأ في الماينكرفت:', err);
+        console.log('Minecraft error:', err);
     });
 
     bot.on('end', () => {
-        console.log('تم قطع الاتصال من السيرفر، جاري إعادة المحاولة بعد 5 ثوانٍ...');
+        console.log('Disconnected from server, reconnecting in 5 seconds...');
         setTimeout(() => {
             createMinecraftBot();
         }, 5000);
