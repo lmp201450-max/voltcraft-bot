@@ -45,4 +45,3 @@ function createMinecraftBot() {
 }
 
 createMinecraftBot();
-            
