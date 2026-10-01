@@ -11,7 +11,7 @@ server.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
 
-const tgBot = new Telegraf('8656237005:AAHReANQpXDoblhC1olX0gA2aYdLuqVEaoA');
+const tgBot = new Telegraf('8656237005:AAFjcErQshfbMrVdGbHBA-_E5JfVIQQt5tA');
 
 tgBot.start((ctx) => {
     ctx.reply('Bot is running');
