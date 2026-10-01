@@ -1,11 +1,10 @@
 const mineflayer = require('mineflayer');
 const { Telegraf } = require('telegraf');
 
-// استخدم التوكن مباشرة أو من متغيرات البيئة
-const tgBot = new Telegraf('8656237005:AA...التوكن_بتاعك');
+const tgBot = new Telegraf('8656237005:AAH4xQdxdsnln1t0LXgAz4DyUbEwn7fA87w');
 
 tgBot.start((ctx) => {
-    ctx.reply('أهلاً بيك يا صقر، بوت VoltCraft شغال ومتصل معاك تمام!');
+    ctx.reply('تم التشغيل');
 });
 
 tgBot.launch();
