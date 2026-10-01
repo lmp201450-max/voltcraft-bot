@@ -6,6 +6,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "mineflayer": "^4.20.0"
+    "mineflayer": "^4.20.0",
+    "telegraf": "^4.16.3"
   }
 }
