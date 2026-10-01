@@ -17,8 +17,17 @@ tgBot.start((ctx) => {
     ctx.reply('Bot is running');
 });
 
-tgBot.launch();
-console.log('Telegram bot started successfully!');
+// تشغيل البوت مع تأمين الاتصال ضد السقوط بسبب الشبكة
+try {
+    tgBot.launch();
+    console.log('Telegram bot started successfully!');
+} catch (err) {
+    console.log('Telegram launch error:', err);
+}
+
+// إيقاف آمن للروبوت
+process.once('SIGINT', () => tgBot.stop('SIGINT'));
+process.once('SIGTERM', () => tgBot.stop('SIGTERM'));
 
 function createMinecraftBot() {
     const bot = mineflayer.createBot({
