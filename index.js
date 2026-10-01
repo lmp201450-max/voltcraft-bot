@@ -4,7 +4,7 @@ const { Telegraf } = require('telegraf');
 const tgBot = new Telegraf('8656237005:AAHReANQpxDobIhC1oIX0gA2aYdLuqVEaoA');
 
 tgBot.start((ctx) => {
-    ctx.reply('أهلاً بيك يا صقر، بوت VoltCraft شغال ومتصل معاك تمام!');
+    ctx.reply('تم فتح البوت');
 });
 
 tgBot.launch();
