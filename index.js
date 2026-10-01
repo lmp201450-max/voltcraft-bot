@@ -23,6 +23,7 @@ console.log('Telegram bot started successfully!');
 function createMinecraftBot() {
     const bot = mineflayer.createBot({
         host: 'radicalcraft.progamer.me',
+        port: 43702,
         username: 'VoltCraftBot',
         version: false
     });
