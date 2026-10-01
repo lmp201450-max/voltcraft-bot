@@ -1,35 +1,21 @@
 const mineflayer = require('mineflayer');
-const { Telegraf } = require('telegraf');
 const http = require('http');
 
+// خادم HTTP بسيط عشان ريندر يفضل يعمل Ping وما يقفلش الخدمة
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Bot is running!');
+    res.end('Minecraft Bot is running and keeping server alive!');
 });
+
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
+    console.log(`HTTP Server is listening on port ${PORT}`);
 });
 
-const tgBot = new Telegraf('8656237005:AAFjcErQshfbMrVdGbHBA-_E5JfVIQQt5tA');
-
-tgBot.start((ctx) => {
-    ctx.reply('Bot is running');
-});
-
-// تشغيل البوت مع تأمين الاتصال ضد السقوط بسبب الشبكة
-try {
-    tgBot.launch();
-    console.log('Telegram bot started successfully!');
-} catch (err) {
-    console.log('Telegram launch error:', err);
-}
-
-// إيقاف آمن للروبوت
-process.once('SIGINT', () => tgBot.stop('SIGINT'));
-process.once('SIGTERM', () => tgBot.stop('SIGTERM'));
-
+// دالة تشغيل بوت الماينكرفت مع إعادة الاتصال التلقائي
 function createMinecraftBot() {
+    console.log('Attempting to connect to Minecraft server...');
+    
     const bot = mineflayer.createBot({
         host: 'radicalcraft.progamer.me',
         port: 43702,
@@ -38,19 +24,25 @@ function createMinecraftBot() {
     });
 
     bot.on('spawn', () => {
-        console.log('Bot spawned successfully.');
+        console.log('Bot spawned successfully inside Minecraft server!');
+    });
+
+    bot.on('chat', (username, message) => {
+        if (username === bot.username) return;
+        console.log(`${username}: ${message}`);
     });
 
     bot.on('error', (err) => {
-        console.log('Minecraft error:', err);
+        console.log('Minecraft error encountered:', err);
     });
 
-    bot.on('end', () => {
-        console.log('Disconnected from server, reconnecting in 5 seconds...');
+    bot.on('end', (reason) => {
+        console.log(`Disconnected from server. Reason: ${reason}. Reconnecting in 5 seconds...`);
         setTimeout(() => {
             createMinecraftBot();
         }, 5000);
     });
 }
 
+// بدء تشغيل البوت
 createMinecraftBot();
