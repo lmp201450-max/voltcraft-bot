@@ -1,7 +1,6 @@
 const mineflayer = require('mineflayer');
 const { Telegraf } = require('telegraf');
 
-// 1. تشغيل بوت تليجرام لوحده بشكل مستقل
 const tgBot = new Telegraf('8656237005:AAHReANQpxDobIhC1oIX0gA2aYdLuqVEaoA');
 
 tgBot.start((ctx) => {
@@ -11,7 +10,6 @@ tgBot.start((ctx) => {
 tgBot.launch();
 console.log('تم تشغيل بوت تليجرام بنجاح!');
 
-// 2. تشغيل بوت ماينكرفت بدالة إعادة محاولة آمنة
 function createMinecraftBot() {
     const bot = mineflayer.createBot({
         host: 'radicalcraft.progamer.mw',
@@ -31,7 +29,7 @@ function createMinecraftBot() {
     bot.on('end', () => {
         console.log('تم قطع الاتصال من السيرفر، جاري إعادة المحاولة بعد 5 ثوانٍ...');
         setTimeout(() => {
-            createMinecraftBot(); // إعادة الاتصال بدلاً من إيقاف السيرفر بالكامل
+            createMinecraftBot();
         }, 5000);
     });
 }
