@@ -18,7 +18,7 @@ function createMinecraftBot() {
         host: 'radicalcraft.progamerme.me',
         port: 43702,
         username: 'VoltCraftBot',
-        version: '1.20.4' // اكتب هنا إصدار الجافا اللي السيرفر شغال عليه حالياً
+        version: '1.20.4'
     });
 
     bot.on('spawn', () => {
