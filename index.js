@@ -24,13 +24,14 @@ function createMinecraftBot() {
     bot.on('spawn', () => {
         console.log('Bot spawned successfully inside Minecraft server!');
         
+        // تكرار كل 5 دقائق (300000 ملي ثانية)
         setInterval(() => {
             bot.chat('اللهم صل على سيدنا محمد');
             bot.setControlState('jump', true);
             setTimeout(() => {
                 bot.setControlState('jump', false);
             }, 500);
-        }, 10000);
+        }, 300000);
     });
 
     bot.on('error', (err) => {
