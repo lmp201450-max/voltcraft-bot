@@ -3,7 +3,7 @@ const http = require('http');
 
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Minecraft Bot is running!');
+    res.end("Minecraft Bot is running!");
 });
 
 const PORT = process.env.PORT || 3000;
@@ -15,16 +15,15 @@ function createMinecraftBot() {
     console.log('Attempting to connect to Minecraft server...');
 
     const bot = mineflayer.createBot({
-        host: 'radicalcraft.progamer.me',
-        port: 43702,
+        host: 'radicalcraft.falixsrv.me',
+        port: 21265,
         username: 'VoltCraftBot',
         version: '1.20.4'
     });
 
     bot.on('spawn', () => {
         console.log('Bot spawned successfully inside Minecraft server!');
-        
-        // تكرار كل 5 دقائق (300000 ملي ثانية)
+
         setInterval(() => {
             bot.chat('اللهم صل على سيدنا محمد');
             bot.setControlState('jump', true);
@@ -39,7 +38,7 @@ function createMinecraftBot() {
     });
 
     bot.on('end', (reason) => {
-        console.log(`Disconnected from server. Reason: ${reason}. Reconnecting in 10 seconds...`);
+        console.log(`Disconnected from server. Reason: ${reason}. Reconnecting...`);
         setTimeout(() => {
             createMinecraftBot();
         }, 10000);
