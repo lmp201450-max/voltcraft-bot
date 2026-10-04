@@ -4,10 +4,9 @@ function createMinecraftBot() {
     console.log('Attempting to connect to Minecraft server...');
 
     const bot = mineflayer.createBot({
-        host: 'radicalcraft.falixsrv.me',
-        port: 21265,
-        username: 'VoltCraftBot',
-        version: '1.20.4'
+        host: 'radicalcraft.progamer.me',
+        port: 43702,
+        username: 'VoltCraftBot'
     });
 
     bot.on('spawn', () => {
