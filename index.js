@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// سيرفر الويب الوهمي عشان Render ما يفصلش البوت
 app.get('/', (req, res) => {
   res.send('Minecraft Bot is running 24/7!');
 });
@@ -11,7 +10,6 @@ app.listen(PORT, () => {
   console.log(`Web server is running on port ${PORT}`);
 });
 
-// كود بوت ماين كرافت الأساسي الخاص بك
 const mineflayer = require('mineflayer');
 
 function createMinecraftBot() {
@@ -20,7 +18,8 @@ function createMinecraftBot() {
   const bot = mineflayer.createBot({
     host: 'radicalcraft.progamer.me',
     port: 43702,
-    username: 'VoltCraftBot'
+    username: 'VoltCraftBot',
+    version: '1.26.2'
   });
 
   bot.on('spawn', () => {
