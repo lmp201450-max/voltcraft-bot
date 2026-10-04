@@ -18,8 +18,7 @@ function createMinecraftBot() {
   const bot = mineflayer.createBot({
     host: 'radicalcraft.progamer.me',
     port: 43702,
-    username: 'VoltCraftBot',
-    version: '1.26.2'
+    username: 'VoltCraftBot'
   });
 
   bot.on('spawn', () => {
