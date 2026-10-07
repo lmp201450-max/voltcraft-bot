@@ -1,12 +1,14 @@
 {
-  "name": "volftcraft-bot",
+  "name": "voltcraft-bot",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "bedrock-protocol": "^3.5.0",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "node-telegram-bot-api": "^0.66.0"
   }
 }
