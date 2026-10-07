@@ -1,46 +1,44 @@
-const mineflayer = require('mineflayer');
+const bedrock = require('bedrock-protocol');
 const express = require('express');
-
-// إعداد سرفر الويب عشان Render ما يقفلش البوت
 const app = express();
 const PORT = process.env.PORT || 10000;
 
+// سيرفر ويب بسيط عشان Render ماينامش (Keep-Alive)
 app.get('/', (req, res) => {
-    res.send('VoltCraftBot is running and alive!');
+    res.send('Bedrock Bot is running and alive!');
 });
 
 app.listen(PORT, () => {
     console.log(`Web server is running on port ${PORT}`);
 });
 
-// دالة الاتصال بسيرفر ماينكرافت
-function createBot() {
-    const bot = mineflayer.createBot({
-        host: 'radicalcraft.play.hosting', // عنوان السيرفر
-        port: 25777,                      // بورت الجافا الأساسي الصحيح
-        version: '1.21.11',               // إصدار السيرفر المتطابق
-        username: 'VoltCraftBot'          // اسم البوت داخل السيرفر
+// دالة اتصال بوت البيدروك
+function createBedrockBot() {
+    const client = bedrock.createClient({
+        host: 'IP_ADDRESS_HERE',   // حط هنا الآيباد بتاع السيرفر (مثل: rbx02.powerupstack.com)
+        port: 19132,               // بورت البيدروك (افتراضي 19132 أو غيره حسب لوحتك)
+        username: 'VoltCraftBot',  // اسم البوت داخل السيرفر
+        offline: true              // وضع الاوفلاين عشان يدخل السيرفرات المجانية
     });
 
-    bot.on('spawn', () => {
-        console.log('Bot connected to Minecraft server successfully!');
+    client.on('spawn', () => {
+        console.log('Bot connected to Bedrock server successfully!');
     });
 
-    bot.on('chat', (username, message) => {
-        if (username === bot.username) return;
-        console.log(`[Chat] ${username}: ${message}`);
+    client.on('text', (packet) => {
+        console.log(`[Chat] ${packet.sourceName}: ${packet.message}`);
     });
 
-    bot.on('end', () => {
-        console.log('Bot disconnected. Reconnecting in 5 seconds...');
+    client.on('disconnect', (packet) => {
+        console.log('Bot disconnected:', packet);
         setTimeout(() => {
-            createBot();
-        }, 5000);
+            createBedrockBot();
+        }, 5000); // إعادة محاولة الاتصال بعد 5 ثواني لو فصل
     });
 
-    bot.on('error', (err) => {
+    client.on('error', (err) => {
         console.log('Bot encountered an error:', err);
     });
 }
 
-createBot();
+createBedrockBot();
