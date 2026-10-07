@@ -12,52 +12,51 @@ const bot = new Telegraf(TELEGRAM_TOKEN);
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('VoltCraft Bot is running!');
+  res.send('VoltCraft Bot is running successfully!');
 });
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-// ================= دالة التشغيل =================
+// ================= دالة التشغيل عبر بروكسي لتجاوز الحظر =================
 async function startFalixServer() {
+  const targetUrl = `https://client.falixnodes.net/api/client/servers/${FALIX_SERVER_ID}/power`;
+  // استخدام وكيل CorsProxy لتخطي حظر Cloudflare على Render
+  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+
   try {
-    const response = await axios({
-      method: 'post',
-      url: `https://client.falixnodes.net/api/client/servers/${FALIX_SERVER_ID}/power`,
-      data: { signal: 'start' },
-      headers: {
-        'Authorization': `Bearer ${FALIX_API_KEY}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
-        'Origin': 'https://client.falixnodes.net',
-        'Referer': `https://client.falixnodes.net/server/${FALIX_SERVER_ID}`
-      },
-      timeout: 10000
-    });
-    return { success: true };
+    const response = await axios.post(
+      proxyUrl,
+      { signal: 'start' },
+      {
+        headers: {
+          'Authorization': `Bearer ${FALIX_API_KEY}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        timeout: 15000
+      }
+    );
+    return { success: true, data: response.data };
   } catch (error) {
-    console.error('Error:', error.response ? error.response.status : error.message);
-    return { success: false };
+    console.error('Falix API Error:', error.response ? error.response.status : error.message);
+    return { success: false, error: error.message };
   }
 }
 
 // ================= أوامر تليجرام =================
 bot.start(async (ctx) => {
-  await ctx.reply('⏳ جاري إرسال أمر التشغيل...');
+  await ctx.reply('⏳ جاري الاتصال باللوحة وتشغيل السيرفر...');
 
-  let result = await startFalixServer();
-  
-  // لو فشلت المرة الأولى من كود حماية اللوحة، يعيد المحاولة تلقائياً بعد ثانية
-  if (!result.success) {
-    await new Promise(res => setTimeout(res, 1500));
-    result = await startFalixServer();
-  }
+  const result = await startFalixServer();
 
   if (result.success) {
-    await ctx.reply('✅ تم إرسال أمر التشغيل بنجاح والسيرفر بيقوم دلوقتي!');
+    await ctx.reply('✅ تم إرسال أمر التشغيل بنجاح! السيرفر بيقوم دلوقتي وهيفضل أونلاين.');
   } else {
-    await ctx.reply('❌ اللوحة حالياً عاملة الحماية (Cloudflare)، جرب كمان شوية أو شغلها مرة من الموقع.');
+    await ctx.reply('❌ حصلت مشكلة في الاتصال باللوحة، تأكد من صحة مفتاح الـ API.');
   }
 });
 
 bot.launch();
+
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
