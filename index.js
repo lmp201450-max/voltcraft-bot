@@ -3,16 +3,16 @@ const axios = require('axios');
 const bedrock = require('bedrock-protocol');
 const { Telegraf } = require('telegraf');
 
-// ================= الإعدادات والمتغيرات =================
+// ================= الإعدادات المباشرة =================
 const PORT = process.env.PORT || 3000;
-const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
-const FALIX_API_KEY = process.env.FALIX_API_KEY;
-const FALIX_SERVER_ID = process.env.FALIX_SERVER_ID;
+const TELEGRAM_TOKEN = '8820559215:AAE8h59RJbtI66Q9p4LCH5V4NP2s4_-4XJI';
+const FALIX_API_KEY = 'flx_live_Y0YRCavO3DHUjbMm0EAO2JjD9tvUy1aPF0otiRKb';
+const FALIX_SERVER_ID = '3503676';
 
-// بيانات السيرفر للدخول ببوت Bedrock
-const MINECRAFT_HOST = process.env.MC_HOST || 'radicalcraft1.falixsrv.me';
-const MINECRAFT_PORT = parseInt(process.env.MC_PORT) || 28508;
-const BOT_USERNAME = process.env.BOT_NAME || 'KidiCraftBot';
+// بيانات السيرفر
+const MINECRAFT_HOST = 'radicalcraft1.falixsrv.me';
+const MINECRAFT_PORT = 28508;
+const BOT_USERNAME = 'KidiCraftBot';
 
 const bot = new Telegraf(TELEGRAM_TOKEN);
 const app = express();
@@ -79,7 +79,6 @@ bot.start(async (ctx) => {
 
   if (result.success) {
     await ctx.reply('✅ تم إرسال أمر التشغيل والسيرفر بيقوم دلوقتي!');
-    // انتظار 15 ثانية حتى يكتمل إقلاع السيرفر قبل دخول البوت
     setTimeout(() => {
       connectBedrockBot();
     }, 15000);
@@ -90,6 +89,5 @@ bot.start(async (ctx) => {
 
 bot.launch();
 
-// إيقاف تشغيل آمن
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
