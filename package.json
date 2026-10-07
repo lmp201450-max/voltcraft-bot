@@ -1,14 +1,12 @@
 {
-  "name": "voltcraft-bot",
+  "name": "volftcraft-bot",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "mineflayer": "^4.24.0",
-    "telegraf": "^4.16.3",
+    "bedrock-protocol": "^3.5.0",
     "express": "^4.19.2"
   }
 }
