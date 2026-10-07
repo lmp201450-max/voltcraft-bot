@@ -14,27 +14,40 @@ app.get('/', (req, res) => res.send('Bot is running!'));
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 async function startFalixServer() {
-  // استخدام وكيل مجاني لتجاوز حظر Cloudflare للـ IPs
-  const targetUrl = `https://client.falixnodes.net/api/client/servers/${FALIX_SERVER_ID}/power`;
-  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
-
   try {
-    const response = await axios.post(
-      proxyUrl,
-      { signal: 'start' },
-      {
+    const response = await axios({
+      method: 'post',
+      url: `https://client.falixnodes.net/api/client/servers/${FALIX_SERVER_ID}/power`,
+      headers: {
+        'Authorization': `Bearer ${FALIX_API_KEY}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36'
+      },
+      data: JSON.stringify({ signal: 'start' }),
+      timeout: 10000
+    });
+    return { success: true };
+  } catch (error) {
+    // لو Cloudflare بلك الـ IP هنجرب السيرفر البديل للوحة
+    try {
+      const altResponse = await axios({
+        method: 'post',
+        url: `https://panel.falixnodes.net/api/client/servers/${FALIX_SERVER_ID}/power`,
         headers: {
           'Authorization': `Bearer ${FALIX_API_KEY}`,
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36'
         },
-        timeout: 15000
-      }
-    );
-    return { success: true, data: response.data };
-  } catch (error) {
-    console.error('Error:', error.message);
-    return { success: false };
+        data: JSON.stringify({ signal: 'start' }),
+        timeout: 10000
+      });
+      return { success: true };
+    } catch (err) {
+      console.error('Falix Error:', err.message);
+      return { success: false };
+    }
   }
 }
 
@@ -49,6 +62,3 @@ bot.start(async (ctx) => {
 });
 
 bot.launch();
-
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
