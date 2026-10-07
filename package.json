@@ -9,6 +9,6 @@
     "axios": "^1.6.8",
     "bedrock-protocol": "^3.5.0",
     "express": "^4.19.2",
-    "node-telegram-bot-api": "^0.66.0"
+    "telegraf": "^4.15.3"
   }
 }
