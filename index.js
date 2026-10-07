@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// سيرفر ويب بسيط عشان Render ماينامش (Keep-Alive)
+// سيرفر ويب بسيط عشان Render ما ينامش (Keep-Alive)
 app.get('/', (req, res) => {
     res.send('Bedrock Bot is running and alive!');
 });
@@ -15,10 +15,10 @@ app.listen(PORT, () => {
 // دالة اتصال بوت البيدروك
 function createBedrockBot() {
     const client = bedrock.createClient({
-        host: 'IP_ADDRESS_HERE',   // حط هنا الآيباد بتاع السيرفر (مثل: rbx02.powerupstack.com)
-        port: 19132,               // بورت البيدروك (افتراضي 19132 أو غيره حسب لوحتك)
-        username: 'VoltCraftBot',  // اسم البوت داخل السيرفر
-        offline: true              // وضع الاوفلاين عشان يدخل السيرفرات المجانية
+        host: 'pixelrealm0.progamer.me',   // آيباد السيرفر الصحيح[span_1](start_span)[span_1](end_span)
+        port: 19132,                       // تأكد من البورت (لو كان مختلف في لوحتك غيره هنا)
+        username: 'VoltCraftBot',          // اسم البوت داخل السيرفر
+        offline: true                      // وضع الأوفلاين للاتصال بالسيرفر
     });
 
     client.on('spawn', () => {
