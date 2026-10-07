@@ -15,10 +15,11 @@ app.listen(PORT, () => {
 // دالة اتصال بوت البيدروك
 function createBedrockBot() {
     const client = bedrock.createClient({
-        host: 'pixelrealm0.progamer.me',   // آيباد السيرفر الصحيح[span_1](start_span)[span_1](end_span)
-        port: 19132,                       // تأكد من البورت (لو كان مختلف في لوحتك غيره هنا)
+        host: 'pixelrealm0.progamer.me',   // آيباد السيرفر الصحيح
+        port: 19132,                       // بورت السيرفر (تأكد منه لو مختلف في اللوحة)
         username: 'VoltCraftBot',          // اسم البوت داخل السيرفر
-        offline: true                      // وضع الأوفلاين للاتصال بالسيرفر
+        offline: true,                     // وضع الأوفلاين للاتصال بالسيرفر
+        version: '1.26.51'                 // إصدار السيرفر المطلوب[span_1](start_span)[span_1](end_span)
     });
 
     client.on('spawn', () => {
