@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const { Telegraf } = require('telegraf');
 
-// ================= الإعدادات =================
+// ================= الإعدادات المباشرة =================
 const PORT = process.env.PORT || 3000;
 const TELEGRAM_TOKEN = '8820559215:AAE8h59RJbtI66Q9p4LCH5V4NP2s4_-4XJI';
 const FALIX_API_KEY = 'flx_live_Y0YRCavO3DHUjbMm0EAO2JjD9tvUy1aPF0otiRKb';
@@ -11,6 +11,7 @@ const FALIX_SERVER_ID = '3503676';
 const bot = new Telegraf(TELEGRAM_TOKEN);
 const app = express();
 
+// ================= سيرفر Express لمنع Render من النوم =================
 app.get('/', (req, res) => {
   res.send('VoltCraft Bot is running successfully!');
 });
@@ -29,7 +30,8 @@ async function startFalixServer() {
         headers: {
           'Authorization': `Bearer ${FALIX_API_KEY}`,
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         }
       }
     );
@@ -49,7 +51,7 @@ bot.start(async (ctx) => {
   if (result.success) {
     await ctx.reply('✅ تم إرسال أمر التشغيل! السيرفر بيقوم دلوقتي وهيفضل أونلاين.');
   } else {
-    await ctx.reply('❌ حصلت مشكلة في الاتصال باللوحة، تأكد من مفتاح الـ API.');
+    await ctx.reply('❌ حصلت مشكلة في الاتصال باللوحة، تأكد من صحة مفتاح الـ API.');
   }
 });
 
