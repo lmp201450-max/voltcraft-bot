@@ -45,7 +45,7 @@ async function startFalixServer() {
             });
 
             if (res.status === 204 || res.status === 200) {
-                success = True;
+                success = true;
             }
         }
 
@@ -75,11 +75,11 @@ app.listen(PORT, () => {
 // --- 4. بوت البدروك (AFK Bot) ---
 function createBedrockBot() {
     const client = bedrock.createClient({
-        host: 'Pixelrealm0.progamer.me',
-        port: 30027,
+        host: 'radicalcraft1.falixsrv.me', // الأيبي الجديد
+        port: 28508,                     // البورت الجديد
         username: 'VoltCraftBot',
         offline: true,
-        version: '1.20.51'
+        version: '1.26.51'                // الإصدار المطلوب
     });
 
     client.on('spawn', () => {
