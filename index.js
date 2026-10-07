@@ -6,13 +6,13 @@ const { Telegraf } = require('telegraf');
 // ================= الإعدادات والمتغيرات =================
 const PORT = process.env.PORT || 3000;
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
-const FALIX_API_KEY = process.env.FALIX_API_KEY; // المفتاح الجديد اللي أنشأته
-const FALIX_SERVER_ID = process.env.FALIX_SERVER_ID; // معرف السيرفر من لوحة Falix
+const FALIX_API_KEY = process.env.FALIX_API_KEY;
+const FALIX_SERVER_ID = process.env.FALIX_SERVER_ID;
 
 // بيانات السيرفر للدخول ببوت Bedrock
 const MINECRAFT_HOST = process.env.MC_HOST || 'radicalcraft1.falixsrv.me';
 const MINECRAFT_PORT = parseInt(process.env.MC_PORT) || 28508;
-const BOT_USERNAME = process.env.BOT_NAME || 'VoltCraftBot';
+const BOT_USERNAME = process.env.BOT_NAME || 'KidiCraftBot';
 
 const bot = new Telegraf(TELEGRAM_TOKEN);
 const app = express();
@@ -84,12 +84,12 @@ bot.start(async (ctx) => {
       connectBedrockBot();
     }, 15000);
   } else {
-    await ctx.reply('❌ حصلت مشكلة في الاتصال باللوحة، التأكد من صحة مفتاح الـ API.');
+    await ctx.reply('❌ حصلت مشكلة في الاتصال باللوحة، تأكد من صحة مفتاح الـ API.');
   }
 });
 
 bot.launch();
 
-// إيقاف تشغيل آمن عند إغلاق التطبيق
+// إيقاف تشغيل آمن
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
