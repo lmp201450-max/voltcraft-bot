@@ -1,79 +1,95 @@
-const bedrock = require('bedrock-protocol');
 const express = require('express');
 const axios = require('axios');
-const TelegramBot = require('node-telegram-bot-api');
+const bedrock = require('bedrock-protocol');
+const { Telegraf } = require('telegraf');
 
+// ================= الإعدادات والمتغيرات =================
+const PORT = process.env.PORT || 3000;
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
+const FALIX_API_KEY = process.env.FALIX_API_KEY; // المفتاح الجديد اللي أنشأته
+const FALIX_SERVER_ID = process.env.FALIX_SERVER_ID; // معرف السيرفر من لوحة Falix
+
+// بيانات السيرفر للدخول ببوت Bedrock
+const MINECRAFT_HOST = process.env.MC_HOST || 'radicalcraft1.falixsrv.me';
+const MINECRAFT_PORT = parseInt(process.env.MC_PORT) || 28508;
+const BOT_USERNAME = process.env.BOT_NAME || 'VoltCraftBot';
+
+const bot = new Telegraf(TELEGRAM_TOKEN);
 const app = express();
-const PORT = process.env.PORT || 10000;
 
-// --- 1. البيانات ---
-const TELEGRAM_TOKEN = '8820559215:AAE8h59RJbtI66Q9p4LCH5V4NP2s4_-4XJI';
-const FALIX_API_KEY = 'flx_live_WQUUjturfcgSKqUQyAYB3x60eyceJ0wpkseTZODh'; 
-const SERVER_ID = '3503676';
-
-const PANEL_URL = 'https://client.falixnodes.net';
-
-const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
-
-// --- 2. وظيفة تشغيل السيرفر ---
-async function startFalixServer() {
-    try {
-        const startUrl = `${PANEL_URL}/api/client/servers/${SERVER_ID}/power`;
-        
-        const res = await axios.post(
-            startUrl, 
-            { signal: 'start' }, 
-            {
-                headers: {
-                    'Authorization': `Bearer ${FALIX_API_KEY}`,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        );
-
-        if (res.status === 204 || res.status === 200) {
-            return '✅ تم إرسال أمر التشغيل والسيرفر بيقوم دلوقتي!';
-        } else {
-            return '❌ اللوحة رفضت الأمر، اتأكد إن السيرفر مش شغال بالفعل.';
-        }
-    } catch (error) {
-        if (error.response && error.response.status === 412) {
-            return '⚠️ السيرفر شغال بالفعل أو بيعمل Start حالياً!';
-        }
-        return '❌ حصلت مشكلة في الاتصال باللوحة، اتأكد من صحة مفتاح الـ API.';
-    }
-}
-
-bot.onText(/\/(start|بدأ|بدء)/, async (msg) => {
-    const chatId = msg.chat.id;
-    bot.sendMessage(chatId, '⏳ جاري الاتصال باللوحة وتشغيل السيرفر...');
-    const resultMessage = await startFalixServer();
-    bot.sendMessage(chatId, resultMessage);
-});
-
-// --- 3. Keep-Alive ---
+// ================= سيرفر Express لمنع Render من النوم =================
 app.get('/', (req, res) => {
-    res.send('Bot is running!');
+  res.send('VoltCraft Bot is running successfully!');
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
 
-// --- 4. Bedrock Bot (AFK) ---
-function createBedrockBot() {
-    const client = bedrock.createClient({
-        host: 'radicalcraft1.falixsrv.me',
-        port: 28508,
-        username: 'VoltCraftBot',
-        offline: true,
-        version: '1.26.51'
-    });
-
-    client.on('spawn', () => console.log('Bedrock bot connected!'));
-    client.on('disconnect', () => setTimeout(createBedrockBot, 5000));
-    client.on('error', (err) => console.log(err));
+// ================= دالة تشغيل السيرفر عبر Falix API =================
+async function startFalixServer() {
+  try {
+    const response = await axios.post(
+      `https://client.falixnodes.net/api/client/servers/${FALIX_SERVER_ID}/power`,
+      { signal: 'start' },
+      {
+        headers: {
+          'Authorization': `Bearer ${FALIX_API_KEY}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error('Falix API Error:', error.response ? error.response.data : error.message);
+    return { success: false, error: error.message };
+  }
 }
 
-createBedrockBot();
+// ================= دالة ربط بوت بيدروك بالسيرفر =================
+function connectBedrockBot() {
+  console.log(`Connecting Bedrock Bot to ${MINECRAFT_HOST}:${MINECRAFT_PORT}...`);
+  
+  const client = bedrock.createClient({
+    host: MINECRAFT_HOST,
+    port: MINECRAFT_PORT,
+    username: BOT_USERNAME,
+    offline: true
+  });
+
+  client.on('join', () => {
+    console.log(`Bot ${BOT_USERNAME} connected to Minecraft server!`);
+  });
+
+  client.on('disconnect', (packet) => {
+    console.log('Server requested disconnect:', packet);
+  });
+
+  client.on('error', (err) => {
+    console.error('Bedrock Protocol Error:', err);
+  });
+}
+
+// ================= أوامر بوت تليجرام =================
+bot.start(async (ctx) => {
+  await ctx.reply('⏳ جاري الاتصال باللوحة وتشغيل السيرفر...');
+
+  const result = await startFalixServer();
+
+  if (result.success) {
+    await ctx.reply('✅ تم إرسال أمر التشغيل والسيرفر بيقوم دلوقتي!');
+    // انتظار 15 ثانية حتى يكتمل إقلاع السيرفر قبل دخول البوت
+    setTimeout(() => {
+      connectBedrockBot();
+    }, 15000);
+  } else {
+    await ctx.reply('❌ حصلت مشكلة في الاتصال باللوحة، التأكد من صحة مفتاح الـ API.');
+  }
+});
+
+bot.launch();
+
+// إيقاف تشغيل آمن عند إغلاق التطبيق
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
