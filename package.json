@@ -7,6 +7,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "bedrock-protocol": "^1.26.0"
+    "bedrock-protocol": "latest"
   }
 }
