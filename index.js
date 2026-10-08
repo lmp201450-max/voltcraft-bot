@@ -1,6 +1,9 @@
+const http = require('http');
+http.createServer((req, res) => res.end('Bot is running!')).listen(process.env.PORT || 3000);
+
 const bedrock = require('bedrock-protocol');
 
-// بيانات السيرفر الخاصة بك من اللوحة
+// بيانات السيرفر الخاصة بك
 const host = 'pixelrealm0.progamer.me';
 const port = 19132;
 const username = 'VoltCraft_Bot';
@@ -14,15 +17,13 @@ function createBot() {
         host: host,
         port: port,
         username: username,
-        // مسحنا الـ version عشان يتعرف عليه تلقائياً بدون مشاكل
-        offline: false, // للتسجيل بحساب Microsoft وتخطي حماية البورت
+        offline: false,
         profilesFolder: './controls'
     });
 
     client.on('spawn', () => {
         console.log('✅ تم دخول البوت السيرفر بنجاح وهو شغال حالياً!');
 
-        // إرسال رسالة كل 5 دقائق
         if (messageInterval) clearInterval(messageInterval);
         
         messageInterval = setInterval(() => {
