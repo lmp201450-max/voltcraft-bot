@@ -40,5 +40,20 @@ function createBot() {
                 });
                 console.log('💬 تم إرسال الصلاة على النبي في الشات.');
             } catch (err) {
-                console.error('
-                              
+                console.error('خطأ أثناء إرسال الرسالة:', err.message);
+            }
+        }, 5 * 60 * 1000); // كل 5 دقائق
+    });
+
+    client.on('close', () => {
+        console.log('⚠️ الاتصال اتفصل، جاري إعادة المحاولة خلال 10 ثواني...');
+        if (messageInterval) clearInterval(messageInterval);
+        setTimeout(createBot, 10000);
+    });
+
+    client.on('error', (err) => {
+        console.error('❌ حدث خطأ في الاتصال:', err.message);
+    });
+}
+
+createBot();
