@@ -3,7 +3,6 @@ const bedrock = require('bedrock-protocol');
 // بيانات السيرفر الخاصة بك من اللوحة
 const host = 'pixelrealm0.progamer.me';
 const port = 19132;
-const version = '1.20.51'; // إصدار السيرفر المحدد
 const username = 'VoltCraft_Bot';
 
 let messageInterval = null;
@@ -15,7 +14,7 @@ function createBot() {
         host: host,
         port: port,
         username: username,
-        version: version,
+        // مسحنا الـ version عشان يتعرف عليه تلقائياً بدون مشاكل
         offline: false, // للتسجيل بحساب Microsoft وتخطي حماية البورت
         profilesFolder: './controls'
     });
@@ -23,7 +22,7 @@ function createBot() {
     client.on('spawn', () => {
         console.log('✅ تم دخول البوت السيرفر بنجاح وهو شغال حالياً!');
 
-        // إرسال رسالة كل 5 دقائق (300,000 مللي ثانية)
+        // إرسال رسالة كل 5 دقائق
         if (messageInterval) clearInterval(messageInterval);
         
         messageInterval = setInterval(() => {
@@ -40,7 +39,7 @@ function createBot() {
             } catch (err) {
                 console.error('خطأ أثناء إرسال الرسالة:', err.message);
             }
-        }, 5 * 60 * 1000); // كل 5 دقائق
+        }, 5 * 60 * 1000);
     });
 
     client.on('close', () => {
