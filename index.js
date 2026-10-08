@@ -3,22 +3,23 @@ http.createServer((req, res) => res.end('Bot is running!')).listen(process.env.P
 
 const bedrock = require('bedrock-protocol');
 
+// إعدادات بوت ماين كرافت
 const host = 'pixelrealm0.progamer.me';
-const port = 19132; // البورت الأساسي المستقر
+const port = 19132;
 const username = 'VoltCraft_Bot';
 
 let messageInterval = null;
 
 function createBot() {
-    console.log('جاري الاتصال بالسيرفر...');
+    console.log('جاري الاتصال بسيرفر ماين كرافت...');
 
     const client = bedrock.createClient({
         host: host,
         port: port,
         username: username,
         offline: false,
-        skipPacks: true,        // تخطي المودات الثقيلة للدخول السريع
-        timeout: 120000,        // مهلة اتصال واسعة (دقيقتين) عشان يتخطى أي بطء في الاستضافة
+        skipPacks: true,        // تخطي تحميل ملفات الموارد والمودات للدخول السريع
+        timeout: 120000,        // مهلة اتصال واسعة لمنع الـ Timeout
         profilesFolder: './controls'
     });
 
@@ -27,6 +28,7 @@ function createBot() {
 
         if (messageInterval) clearInterval(messageInterval);
         
+        // إرسال الصلاة على النبي كل 5 دقائق تلقائياً في الشات
         messageInterval = setInterval(() => {
             try {
                 client.queue('text', {
@@ -41,7 +43,7 @@ function createBot() {
             } catch (err) {
                 console.error('خطأ أثناء إرسال الرسالة:', err.message);
             }
-        }, 5 * 60 * 1000); // كل 5 دقائق
+        }, 5 * 60 * 1000);
     });
 
     client.on('close', () => {
