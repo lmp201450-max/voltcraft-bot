@@ -3,9 +3,9 @@ http.createServer((req, res) => res.end('Bot is running!')).listen(process.env.P
 
 const bedrock = require('bedrock-protocol');
 
-// بيانات السيرفر الخاصة بك
+// بيانات السيرفر الخاص بيك
 const host = 'pixelrealm0.progamer.me';
-const port = 19132;
+const port = 30037;
 const username = 'VoltCraft_Bot';
 
 let messageInterval = null;
@@ -22,10 +22,10 @@ function createBot() {
     });
 
     client.on('spawn', () => {
-        console.log('✅ تم دخول البوت السيرفر بنجاح وهو شغال حالياً!');
+        console.log('✅ تم دخول البوت للسيرفر بنجاح!');
 
         if (messageInterval) clearInterval(messageInterval);
-        
+
         messageInterval = setInterval(() => {
             try {
                 client.queue('text', {
@@ -34,18 +34,21 @@ function createBot() {
                     source_name: client.username,
                     xuid: '',
                     platform_chat_id: '',
-                    message: 'اللهم صل على سيدنا محمد'
+                    message: 'أهلاً بيكم يا شباب محمد'
                 });
-                console.log('💬 تم إرسال الصلاة على النبي في الشات.');
+
+                console.log('📨 تم إرسال الرسالة بنجاح');
             } catch (err) {
-                console.error('خطأ أثناء إرسال الرسالة:', err.message);
+                console.error('❌ حصل خطأ أثناء إرسال الرسالة:', err.message);
             }
         }, 5 * 60 * 1000);
     });
 
     client.on('close', () => {
-        console.log('⚠️ الاتصال اتفصل، جاري إعادة المحاولة خلال 10 ثواني...');
+        console.log('⚠️ الاتصال جاري إعادة المحاولة خلال 10 ثواني...');
+        
         if (messageInterval) clearInterval(messageInterval);
+
         setTimeout(createBot, 10000);
     });
 
