@@ -3,23 +3,22 @@ http.createServer((req, res) => res.end('Bot is running!')).listen(process.env.P
 
 const bedrock = require('bedrock-protocol');
 
-// تم تعديل البورت هنا للبورت الصحيح من لوحة التحكم الخاصة بك
 const host = 'pixelrealm0.progamer.me';
-const port = 30037; 
+const port = 19132; // البورت الأساسي المستقر
 const username = 'VoltCraft_Bot';
 
 let messageInterval = null;
 
 function createBot() {
-    console.log('جاري الاتصال بالسيرفر على البورت الصحيح...');
+    console.log('جاري الاتصال بالسيرفر...');
 
     const client = bedrock.createClient({
         host: host,
         port: port,
         username: username,
         offline: false,
-        skipPacks: true,        // لتخطي المودات وحزم الموارد الضخمة و الدخول فوراً
-        timeout: 60000,         // مهلة اتصال 60 ثانية لضمان استقرار الشبكة
+        skipPacks: true,        // تخطي المودات الثقيلة للدخول السريع
+        timeout: 120000,        // مهلة اتصال واسعة (دقيقتين) عشان يتخطى أي بطء في الاستضافة
         profilesFolder: './controls'
     });
 
