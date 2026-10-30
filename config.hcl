@@ -17,9 +17,9 @@ server {
   bedrock {
     servers = [
       {
-        name = "My Countries Server"
+        name = "Countries Server"
         host = "YOUR_POWERUPSTACK_ADDRESS"
-        port = 19132
+        port = YOUR_BEDROCK_PORT
         addon_mode = "no_net"
       }
     ]
