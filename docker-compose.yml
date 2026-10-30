@@ -1,0 +1,19 @@
+
+services:
+  bvc:
+    image: ghcr.io/alaydriem/bedrock-voice-chat/server:1.0.0-beta.23
+    container_name: bvc-server
+    restart: unless-stopped
+
+    ports:
+      - "443:443/tcp"
+      - "443:443/udp"
+      - "28280:28280/udp"
+
+    environment:
+      CF_API_TOKEN: ${CF_API_TOKEN}
+      BVC_ACCESS_TOKEN: ${BVC_ACCESS_TOKEN}
+
+    volumes:
+      - ./data:/data
+      - ./config.hcl:/data/config.hcl:ro
