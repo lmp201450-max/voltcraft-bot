@@ -1,19 +1,29 @@
 
 services:
   bvc:
-    image: ghcr.io/alaydriem/bedrock-voice-chat/server:1.0.0-beta.23
+    image: ghcr.io/alaydriem/bedrock-voice-chat/server:1.0.0-beta.21
     container_name: bvc-server
-    restart: unless-stopped
+    restart: always
 
     ports:
       - "443:443/tcp"
-      - "443:443/udp"
       - "28280:28280/udp"
+
+    user: "100:101"
+    cap_add:
+      - NET_BIND_SERVICE
 
     environment:
       CF_API_TOKEN: ${CF_API_TOKEN}
       BVC_ACCESS_TOKEN: ${BVC_ACCESS_TOKEN}
 
     volumes:
-      - ./data:/data
-      - ./config.hcl:/data/config.hcl:ro
+      - ./:/data
+
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "https://localhost/health/readiness"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+      
