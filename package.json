@@ -1,9 +1,16 @@
+
 {
-  "name": "lifesteal-publisher-bot",
+  "name": "lifesteal-telegram-publisher",
   "version": "1.0.0",
-  "type": "module",
+  "private": true,
+  "description": "Telegram group auto-publisher with an inline admin panel and keyword auto-replies.",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
